@@ -40,7 +40,7 @@ Get started with the Handicrafts Shop by following these steps:
 ### Step 1: Create the React App  
 Run the following command to set up your React project:  
 ```bash  
-npx create-react-app shop-react  
+npx create-react-app shop-react  ```
 ```  
 
 ### Step 2: Install Required Packages  
