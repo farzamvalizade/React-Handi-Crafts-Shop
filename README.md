@@ -34,15 +34,18 @@ Showcasing authentic handicrafts with a sleek design, smooth animations, and a m
 
 ---
 
+
+
+
+```
+
 ## Installation Guide 🛠️  
 Get started with the Handicrafts Shop by following these steps:  
-
 ### Step 1: Create the React App  
 Run the following command to set up your React project:  
-```bash  
-npx create-react-app shop-react  ```
-```  
-
+```bash
+npx create-react-project react-shop
+```
 ### Step 2: Install Required Packages  
 Navigate to your project directory and install these essential packages:  
 ```bash  
