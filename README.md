@@ -1,6 +1,6 @@
 # React-Handi-Crafts-Shop
 
-```markdown
+
 # Handicrafts Shop 🛍️🎨  
 Welcome to **Handicrafts Shop**, a modern and responsive e-commerce web application built with React! 🚀  
 Showcasing authentic handicrafts with a sleek design, smooth animations, and a mobile-first approach.  
@@ -36,8 +36,6 @@ Showcasing authentic handicrafts with a sleek design, smooth animations, and a m
 
 
 
-
-```
 
 ## Installation Guide 🛠️  
 Get started with the Handicrafts Shop by following these steps:  
