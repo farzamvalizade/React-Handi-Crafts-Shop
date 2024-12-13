@@ -7,6 +7,7 @@
     width: 30%;
     height: 100%;
     z-index: 999999;
+    
 }
 
 .cart-responsive .box1{
@@ -60,6 +61,10 @@
     margin: 1rem 0;
     scrollbar-width: thin; 
     scrollbar-color: #b3b3b3 #f5f5f5;
+
+    max-height: 300px;
+    overflow-x: hidden; 
+
 }
 .cart-responsive-link-box::-webkit-scrollbar {
     width: 8px;
@@ -217,6 +222,7 @@
 .cart-item-actions {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .btn-remove {
@@ -373,3 +379,4 @@
         height: 40px;
     }
 }
+

@@ -33,7 +33,7 @@ const Slideshow = () => {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`slide ${index === currentSlide ? "active" : ""}`}
+          className={`slide object-cover ${index === currentSlide ? "active" : ""}`}
         >
           <img src={slide.src} alt={`Slide ${index + 1}`} />
         </div>

@@ -1,14 +1,14 @@
 
-.btn-more,
-.btn-more *,
-.btn-more :after,
-.btn-more :before,
-.btn-more:after,
-.btn-more:before {
+.btn-read,
+.btn-read *,
+.btn-read :after,
+.btn-read :before,
+.btn-read:after,
+.btn-read:before {
   border: 0 solid;
   box-sizing: border-box;
 }
-.btn-more {
+.btn-read {
   -webkit-tap-highlight-color: transparent;
   -webkit-appearance: button;
   background-color: #B1B2FF;
@@ -27,30 +27,30 @@
   padding: 0;
   text-transform: uppercase;
 }
-.btn-more:disabled {
+.btn-read:disabled {
   cursor: default;
 }
-.btn-more:-moz-focusring {
+.btn-read:-moz-focusring {
   outline: auto;
 }
-.btn-more svg {
+.btn-read svg {
   display: block;
   vertical-align: middle;
 }
-.btn-more [hidden] {
+.btn-read [hidden] {
   display: none;
 }
-.btn-more {
+.btn-read {
   border-radius: 99rem;
   border-width: 2px;
   overflow: hidden;
   padding: 0.8rem 3rem;
   position: relative;
 }
-.btn-more span {
+.btn-read span {
   mix-blend-mode: difference;
 }
-.btn-more:before {
+.btn-read:before {
   -webkit-animation: bg-scroll 3s linear infinite;
   animation: bg-scroll 3s linear infinite;
   -webkit-animation-play-state: paused;
@@ -72,15 +72,21 @@
   transition: opacity 0.3s, background-color 0.2s;
   width: 300%;
 }
-.btn-more:hover:before {
+.btn-read:hover:before {
   -webkit-animation-play-state: running;
   animation-play-state: running;
   opacity: 1;
 }
-.btn-more:active:before {
+.btn-read:active:before {
   background-color: #fff;
 }
-.btn-more:hover{
+.btn-read:hover{
   background-color: #3b82f6;
 }
 
+@media screen and (max-width:768px){
+  .btn-read{
+    padding: 0.8rem 1rem;
+    
+  }
+}

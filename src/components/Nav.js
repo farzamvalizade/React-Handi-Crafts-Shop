@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+
 import "./assets/css/styles.css";
 import "./assets/css/cart.css";
 
@@ -17,39 +18,59 @@ const Nav = () => {
     const [showPagesMenu, setShowPagesMenu] = useState(false);
     const handlePagesMenuHover = () => setShowPagesMenu(true);
     const handlePagesMenuLeave = () => setShowPagesMenu(false);
-    const [top, setTop] = useState(false);
 
-    const GoUp = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+    const [visible, setVisible] = useState(true);
+    const [lastScrollTop, setLastScrollTop] = useState(0);
+
+    const toggleVisible = () => {
+        const currentScroll = document.documentElement.scrollTop;
+        const scrollDelta = Math.abs(currentScroll - lastScrollTop)
+        if (currentScroll < lastScrollTop && currentScroll > 100 && scrollDelta > 30) {
+            setVisible(true);
+        } 
+        else if (currentScroll > lastScrollTop && currentScroll > 100) {
+            setVisible(false);
+        }
+
+        setLastScrollTop(currentScroll); 
+    };
+    useEffect(() => {
+        window.addEventListener("scroll", toggleVisible);
+        return () => window.removeEventListener("scroll", toggleVisible);
+    }, [lastScrollTop]);
+
+    const [cart, setCart] = useState(false);
+    const [cartItems, setCartItems] = useState([
+        { id: 1, name: "محصول 1", price: 50000, quantity: 1 },
+        { id: 2, name: "محصول 2", price: 70000, quantity: 1 },
+        { id: 3, name: "محصول 3", price: 30000, quantity: 1 },
+    ]);
+
+    const handleCartShow = () => {
+        setCart((prevState) => !prevState);
     };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 600) {
-                setTop(true);
-            } else {
-                setTop(false);
-            }
-        };
+    const handleQuantityChange = (id, action) => {
+        setCartItems((prevItems) => 
+            prevItems.map(item => 
+                item.id === id 
+                    ? { ...item, quantity: Math.max(1, item.quantity + (action === 'increase' ? 1 : -1)) } 
+                    : item
+            )
+        );
+    };
 
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
-
-    const [cart,setCart] = useState(false);
-
-    const HandleCartShow = () => {
-        setCart((prevState) => !prevState);
-    }
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    };
     return (
         <React.Fragment>
-            <div className={`overlay ${showHumbergerMenu ? 'show' : ''}`} onClick={handleShowHumbergerMenu}></div>
-            <nav className="nav-main w-full  " id="nav-main">
+            <div className={`overlay ${showHumbergerMenu ? 'show' : ''}`} style={{zIndex:"999"}} onClick={handleShowHumbergerMenu}></div>
+            <nav className="nav-main w-full"                  style={{
+                    position: visible ? "sticky" : "relative",
+                    top: visible ? "0" : "-100px",
+                    transition: "top 0.3s ease-in-out",
+                }} id="nav-main">
                 <div className="popup-wrappper" style={{ zIndex: showHumbergerMenu ? "9999" : "-1" }}>
                     <div className="navbar bg-blue-500" id="navbar">
                         <article className="nav-container">
@@ -84,7 +105,7 @@ const Nav = () => {
                             <div className="nav-box-media">
                                 <input type="search" placeholder="جستوجو..." className={`nav-input-serach`} style={{ display: showAll ? 'table' : 'none' }} id="nav-input-serach" />
                                 <Link><i className="fa-solid fa-magnifying-glass search-icon" id="nav-icon-serach" onClick={handleToggleShowAll}></i></Link>
-                                <Link><i className="fa-solid fa-cart-shopping" onClick={HandleCartShow}></i></Link>
+                                <Link><i className="fa-solid fa-cart-shopping" onClick={handleCartShow}></i></Link>
                                 <Link to="/profile"><i className="fa-regular fa-user"></i></Link>
                                 <Link><i className="material-symbols-outlined hamburger-menu" onClick={handleShowHumbergerMenu}>menu</i></Link>
                             </div>
@@ -124,8 +145,7 @@ const Nav = () => {
                             </div>
                         </div>
                     </section>
-                    <div className={`overlay ${cart ? 'show' : ''}`} onClick={HandleCartShow}></div>
-
+                    <div className={`overlay ${cart ? 'show' : ''}`} onClick={handleCartShow}></div>
                     <section 
                         className="cart-responsive" 
                         style={{ display: cart ? "block" : "none" }}
@@ -136,148 +156,55 @@ const Nav = () => {
                                     <div className="cart-responsive-container">
                                         <i 
                                             className="material-symbols-outlined navbar-close-icon" style={{color: "red"}}
-                                            onClick={HandleCartShow}
+                                            onClick={handleCartShow}
                                         >
                                             close
                                         </i>
                                         <h2>سبد خرید شما</h2>
                                         <ul className="cart-responsive-link-box">
-                                            <li className="cart-item">
+                                        {cartItems.map(item => (
+                                            <li key={item.id} className="cart-item w-full">
                                                 <img
                                                     src="https://via.placeholder.com/60/CCCCCC/FFFFFF?text=1"
-                                                    alt="product1"
+                                                    alt={item.name}
                                                     className="cart-item-image"
                                                 />
                                                 <div className="cart-item-info">
-                                                    <span className="mr-2">محصول 1</span>
-                                                    <span className="price mr-2">50,000 تومان</span>
+                                                    <span className="mr-2">{item.name}</span>
+                                                    <span className="price mr-2">{item.price.toLocaleString()} تومان</span>
                                                 </div>
                                                 <div className="cart-item-actions">
-                                                    <button className="btn-quantity">+</button>
-                                                    <button className="btn-quantity">-</button>
+                                                    <button 
+                                                        className="btn-quantity" 
+                                                        onClick={() => handleQuantityChange(item.id, 'increase')}
+                                                    >
+                                                        +
+                                                    </button>
+                                                    <span className="quantity">{item.quantity}</span> {/* نمایش تعداد فعلی */}
+                                                    <button 
+                                                        className="btn-quantity" 
+                                                        onClick={() => handleQuantityChange(item.id, 'decrease')}
+                                                    >
+                                                        -
+                                                    </button>
                                                     <button className="btn-remove">حذف</button>
                                                 </div>
                                             </li>
-                                            <li className="cart-item">
-                                                <img
-                                                    src="https://via.placeholder.com/60/CCCCCC/FFFFFF?text=1"
-                                                    alt="product1"
-                                                    className="cart-item-image"
-                                                />
-                                                <div className="cart-item-info">
-                                                    <span className="mr-2">محصول 1</span>
-                                                    <span className="price mr-2">50,000 تومان</span>
-                                                </div>
-                                                <div className="cart-item-actions">
-                                                    <button className="btn-quantity">+</button>
-                                                    <button className="btn-quantity">-</button>
-                                                    <button className="btn-remove">حذف</button>
-                                                </div>
-                                            </li>
-                                            <li className="cart-item">
-                                                <img
-                                                    src="https://via.placeholder.com/60/CCCCCC/FFFFFF?text=1"
-                                                    alt="product1"
-                                                    className="cart-item-image"
-                                                />
-                                                <div className="cart-item-info">
-                                                    <span className="mr-2">محصول 1</span>
-                                                    <span className="price mr-2">50,000 تومان</span>
-                                                </div>
-                                                <div className="cart-item-actions">
-                                                    <button className="btn-quantity">+</button>
-                                                    <button className="btn-quantity">-</button>
-                                                    <button className="btn-remove">حذف</button>
-                                                </div>
-                                            </li>
-                                            <li className="cart-item">
-                                                <img
-                                                    src="https://via.placeholder.com/60/CCCCCC/FFFFFF?text=1"
-                                                    alt="product1"
-                                                    className="cart-item-image"
-                                                />
-                                                <div className="cart-item-info">
-                                                    <span className="mr-2">محصول 1</span>
-                                                    <span className="price mr-2">50,000 تومان</span>
-                                                </div>
-                                                <div className="cart-item-actions">
-                                                    <button className="btn-quantity">+</button>
-                                                    <button className="btn-quantity">-</button>
-                                                    <button className="btn-remove">حذف</button>
-                                                </div>
-                                            </li>
-                                            <li className="cart-item">
-                                                <img
-                                                    src="https://via.placeholder.com/60/CCCCCC/FFFFFF?text=1"
-                                                    alt="product1"
-                                                    className="cart-item-image"
-                                                />
-                                                <div className="cart-item-info">
-                                                    <span className="mr-2">محصول 1</span>
-                                                    <span className="price mr-2">50,000 تومان</span>
-                                                </div>
-                                                <div className="cart-item-actions">
-                                                    <button className="btn-quantity">+</button>
-                                                    <button className="btn-quantity">-</button>
-                                                    <button className="btn-remove">حذف</button>
-                                                </div>
-                                            </li>
-                                            <li className="cart-item">
-                                                <img
-                                                    src="https://via.placeholder.com/60/CCCCCC/FFFFFF?text=1"
-                                                    alt="product1"
-                                                    className="cart-item-image"
-                                                />
-                                                <div className="cart-item-info">
-                                                    <span className="mr-2">محصول 1</span>
-                                                    <span className="price mr-2">50,000 تومان</span>
-                                                </div>
-                                                <div className="cart-item-actions">
-                                                    <button className="btn-quantity">+</button>
-                                                    <button className="btn-quantity">-</button>
-                                                    <button className="btn-remove">حذف</button>
-                                                </div>
-                                            </li>
-                                            <li className="cart-item">
-                                                <img
-                                                    src="https://via.placeholder.com/60/CCCCCC/FFFFFF?text=1"
-                                                    alt="product1"
-                                                    className="cart-item-image"
-                                                />
-                                                <div className="cart-item-info">
-                                                    <span className="mr-2">محصول 1</span>
-                                                    <span className="price mr-2">50,000 تومان</span>
-                                                </div>
-                                                <div className="cart-item-actions">
-                                                    <button className="btn-quantity">+</button>
-                                                    <button className="btn-quantity">-</button>
-                                                    <button className="btn-remove">حذف</button>
-                                                </div>
-                                            </li>
+))}
                                         </ul>
                                         <div className="cart-summary">
                                             <p className="total-amount">
-                                                مجموع پرداختی: <span>50,000 تومان</span>
+                                                مجموع پرداختی: <span>{calculateTotal().toLocaleString()} تومان</span>
                                             </p>
-                                            <button className="btn-checkout hover:bg-green-500">تسویه حساب</button>
+                                            <a href="/checkout"><button className="btn-checkout hover:bg-green-500"> ادامه فرآیند خرید</button></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-
-
-
                 </div>
             </nav>
-
-            <div className="go-up" id="go-up" style={{display: top ? 'table':'none'}}  onClick={GoUp}>
-            <span className="material-symbols-outlined">
-                rocket
-            </span>
-            </div>
-
         </React.Fragment>
     );
 };

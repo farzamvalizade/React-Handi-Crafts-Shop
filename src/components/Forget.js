@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import "./assets/css/signUp.css";
 
-const Login = () => {
+const ForgetPassword = () => {
     const [inputEmail, setInputEmail] = useState(false);
-    const [inputPassword, setInputPassword] = useState(false);
 
     const [formData, setFormData] = useState({
         email: '',
-        password: '',
+
     });
     const handleInputEmail = () => {
             if (formData.email) {
@@ -20,13 +19,7 @@ const Login = () => {
     };
 
     
-    const handleInputPassword = () => {
-        if (formData.email) {
-            setInputPassword(true)
-        }else{
-            setInputPassword((prevState) => !prevState)
-        }
-    };
+
     const [errors, setErrors] = useState({});
 
     const myValidation = Yup.object().shape({
@@ -34,9 +27,6 @@ const Login = () => {
         .required("لطفا ایمیل خود را وارد کنید")
         .email("لطفا ایمیل خود را به درستی وارد کنید"),
 
-        password: Yup.string()
-        .required("لطفا رمز عبور خود را وارد کنید")
-        .min(6, "رمز عبور باید بیش از 6 کارکتر باشد")
     });
 
     const handleChange = (event) => {
@@ -71,7 +61,7 @@ const Login = () => {
 
             <form onSubmit={handleSubmit}>
 
-            <h1>ورود</h1>
+            <h1>فراموشی رمز </h1>
 
             <div className="input-box">
                 <i className="material-symbols-outlined icon-input">mail</i>
@@ -80,28 +70,12 @@ const Login = () => {
             </div>
             <p className="error-text">{errors.email}</p>
 
-            <div className="input-box">
-                <i className="material-symbols-outlined icon-input">lock</i>
-
-                <label id="label-password" required="" style={{top: inputPassword ? "0" : "50%"}}>رمز عبور</label>
-                <input type="password" className="inputtt" name="password" value={formData.password} onChange={handleChange} onClick={handleInputPassword} />
-            </div>
-            <p className="error-text">{errors.password}</p>
-
-            <div className="remember-forgot">
-                <a href="/forget" className="btn-forgot-password">فراموشی رمز عبور؟</a>
-
-                <label>
-                    <input type="checkbox" className="m-2 w-4 h-4  text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                    یادآوری
-                </label>
-            </div>
-            <button type="submit" className="btn-login">ورود</button>
+            <a className="btn-login" href="/confrim">تایید</a>
 
             <div className="register-link">
                 <p>
-                    اکانتی ندارید؟
-                    <a href="/signup" className="btn-register mr-2">ثبت نام</a>
+                    میخواهید وارد شوید؟
+                    <a href="/login" className="btn-register mr-2" >ورود</a>
                 </p>
             </div>
 
@@ -110,5 +84,5 @@ const Login = () => {
     </section>
     );
 };
-export default Login;
+export default ForgetPassword;
 

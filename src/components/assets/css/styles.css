@@ -215,8 +215,9 @@ body{
 /* ===== navbar ===== */
 
 .nav-main{
-    position: relative;
+    position: sticky;
     transition: all 0.4s ease-in-out;
+    z-index: 999;
 }
 
 .navbar{
@@ -460,6 +461,7 @@ body{
 
 .menu-responsive-input-serach{
     background-color: #DBE2EF;
+    width: 90%;
     margin-top: 3rem;
     padding: 0.8rem 0.5rem;
     height: 2rem;
@@ -538,7 +540,7 @@ body{
 .dropdown {
     position: absolute;
     top: 100%;
-    left: 0;
+    left: -120px;
     background-color: #8996de;
     border: 1px solid #afaceb;
     width: 200px;
@@ -1065,3 +1067,17 @@ transform: translateX(0);
 
   }
 
+  @media screen and (max-width: 768px) {
+    .go-up {
+        right: 15px; /* کاهش فاصله از سمت راست */
+        bottom: 15px; /* کاهش فاصله از پایین */
+        height: 40px; /* کاهش اندازه */
+        width: 40px; /* کاهش اندازه */
+        font-size: 16px; /* کاهش اندازه فونت */
+        line-height: 38px; /* تنظیم ارتفاع داخلی */
+    }
+
+    .go-up span {
+        font-size: 1.2rem; /* کاهش اندازه آیکون */
+    }
+}

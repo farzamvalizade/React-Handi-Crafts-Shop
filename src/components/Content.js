@@ -9,7 +9,7 @@ const Content = () => {
   }
 
   return (
-    <div className="flex flex-col mb-12 w-85% md:flex-row items-center rounded-lg p-6 space-y-6 md:space-y-0 md:space-x-6 md:space-x-reverse sm:mx-16">
+    <div className="flex flex-col mb-12 w-85% md:flex-row items-center rounded-lg p-6 space-y-6 md:space-y-0 md:space-x-6 md:space-x-reverse sm:mx-24">
       <div className="flex-1 text-gray-700">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">عنوان توضیحات</h2>
         <p className="mb-2 leading-relaxed">
@@ -47,7 +47,7 @@ const Content = () => {
         <div className="mr-16 w-full flex justify-center items-center mt-4 col-span-2 font ">
           <button 
             onClick={HandleClick} 
-            className="btn-more"
+            className="btn-read text-sm md:text-lg"
           >
             {showAll ? "کمتر بخوانید" : "بیشتر بخوانید"}
           </button>
