@@ -19,25 +19,29 @@ const Nav = () => {
     const handlePagesMenuHover = () => setShowPagesMenu(true);
     const handlePagesMenuLeave = () => setShowPagesMenu(false);
 
-    const [visible, setVisible] = useState(true);
-    const [lastScrollTop, setLastScrollTop] = useState(0);
+    const [visible, setVisible] = useState(false);
+    const GoUp = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    };
 
-    const toggleVisible = () => {
-        const currentScroll = document.documentElement.scrollTop;
-        const scrollDelta = Math.abs(currentScroll - lastScrollTop)
-        if (currentScroll < lastScrollTop && currentScroll > 100 && scrollDelta > 30) {
+    const handleScroll = () => {
+        if (window.scrollY > 100) {
             setVisible(true);
-        } 
-        else if (currentScroll > lastScrollTop && currentScroll > 100) {
+        } else {
             setVisible(false);
         }
-
-        setLastScrollTop(currentScroll); 
     };
+
     useEffect(() => {
-        window.addEventListener("scroll", toggleVisible);
-        return () => window.removeEventListener("scroll", toggleVisible);
-    }, [lastScrollTop]);
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+ 
 
     const [cart, setCart] = useState(false);
     const [cartItems, setCartItems] = useState([
@@ -48,6 +52,7 @@ const Nav = () => {
 
     const handleCartShow = () => {
         setCart((prevState) => !prevState);
+        
     };
 
     const handleQuantityChange = (id, action) => {
@@ -59,18 +64,24 @@ const Nav = () => {
             )
         );
     };
+    useEffect(() => {
+        if (showHumbergerMenu || cart) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
 
+        return () => {
+            document.body.classList.remove('no-scroll');
+        };
+    }, [showHumbergerMenu, cart]);
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     };
     return (
         <React.Fragment>
             <div className={`overlay ${showHumbergerMenu ? 'show' : ''}`} style={{zIndex:"999"}} onClick={handleShowHumbergerMenu}></div>
-            <nav className="nav-main w-full"                  style={{
-                    position: visible ? "sticky" : "relative",
-                    top: visible ? "0" : "-100px",
-                    transition: "top 0.3s ease-in-out",
-                }} id="nav-main">
+            <nav id="nav-main">
                 <div className="popup-wrappper" style={{ zIndex: showHumbergerMenu ? "9999" : "-1" }}>
                     <div className="navbar bg-blue-500" id="navbar">
                         <article className="nav-container">
@@ -114,11 +125,11 @@ const Nav = () => {
 
                     </div>
 
-                    <section className="menu-responsive " style={{ display: showHumbergerMenu ? 'table' : 'none' }}>
+                    <section className="menu-responsive " style={{ display: showHumbergerMenu ? 'table' : 'none'}}>
                         <div className="box1">
                             <div className="box2" id="box2">
-                                <div className="menu-responsive-box">
-                                        <div className="menu-responsive-container">
+                                <div className="menu-responsive-box" >
+                                        <div className="menu-responsive-container" >
                                             <div style={{ display: "flex", justifyContent: 'space-between' }}>
                                                 <div className="nav-box-logo">
                                                     <a href="/">آقاجانی</a>
@@ -160,7 +171,7 @@ const Nav = () => {
                                         >
                                             close
                                         </i>
-                                        <h2>سبد خرید شما</h2>
+                                        <h2 style={{position:"sticky"}}>سبد خرید شما</h2>
                                         <ul className="cart-responsive-link-box">
                                         {cartItems.map(item => (
                                             <li key={item.id} className="cart-item w-full">
@@ -203,6 +214,9 @@ const Nav = () => {
                             </div>
                         </div>
                     </section>
+                </div>
+                <div className={`go-up ${visible ? 'show' : ''}`} onClick={GoUp}>
+                    <span>↑</span>
                 </div>
             </nav>
         </React.Fragment>

@@ -4,7 +4,9 @@
     box-sizing: border-box;
     font-family: 'vazir';
 }
-
+.no-scroll {
+  overflow:hidden;
+}
 @font-face {
     font-family: 'vazir';
     src: url(../fonts/vazir-font-v16.1.0/Vazir-Medium.eot),
@@ -332,34 +334,46 @@ body{
 }
 
 .go-up {
-    background: #608bc1;
-    height: 50px;
-    width: 50px;
-    right: 31px;
-    bottom: 18px;
-    position: fixed;
-    color: #fff;
-    font-size: 20px;
-    line-height: 48px;
-    text-align: center;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    box-shadow: 0 0 10px 3px rgba(108,98,98,0.2);
-    z-index: 999;
-    cursor: pointer;
-    transition: opacity 0.5s, visibility 0.5s;
+  background: #608bc1;
+  height: 50px;
+  width: 50px;
+  right: 31px;
+  bottom: 18px;
+  position: fixed;
+  color: #fff;
+  font-size: 20px;
+  line-height: 48px;
+  text-align: center;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  box-shadow: 0 0 10px 3px rgba(108,98,98,0.2);
+  z-index: 999;
+  cursor: pointer;
+  transition: opacity 0.5s, visibility 0.5s;
+  opacity: 0; 
+  visibility: hidden; 
+}
+
+.go-up.show {
+  opacity: 1; 
+  visibility: visible;
 }
 
 .go-up span {
-    color: #fff;
-    font-weight: 900;
-    font-size: 1.5rem;
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.5rem;
 }
 
-.go-up:hover{
-    border: 2px solid #011d4c;
+.go-up:hover {
+  border: 2px solid #011d4c;
 }
 
+@media (max-width: 768px) {
+  .go-up {
+      visibility: hidden !important;
+  }
+}
 @media screen and (max-width: 900px){
     .navbar{
         width: 90%;
@@ -1067,17 +1081,4 @@ transform: translateX(0);
 
   }
 
-  @media screen and (max-width: 768px) {
-    .go-up {
-        right: 15px; /* کاهش فاصله از سمت راست */
-        bottom: 15px; /* کاهش فاصله از پایین */
-        height: 40px; /* کاهش اندازه */
-        width: 40px; /* کاهش اندازه */
-        font-size: 16px; /* کاهش اندازه فونت */
-        line-height: 38px; /* تنظیم ارتفاع داخلی */
-    }
 
-    .go-up span {
-        font-size: 1.2rem; /* کاهش اندازه آیکون */
-    }
-}

@@ -170,8 +170,6 @@ a{
         backdrop-filter: blur(100px);
     }
     .login{
-        border: none;
-        backdrop-filter: none;
         z-index: 1;
     }
 }
