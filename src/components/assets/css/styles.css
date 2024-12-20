@@ -5,7 +5,7 @@
     font-family: 'vazir';
 }
 .no-scroll {
-  overflow:hidden;
+  overflow:hidden !important;
 }
 @font-face {
     font-family: 'vazir';
