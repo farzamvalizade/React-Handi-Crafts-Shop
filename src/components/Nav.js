@@ -132,7 +132,7 @@ const Nav = () => {
                                         <div className="menu-responsive-container" >
                                             <div style={{ display: "flex", justifyContent: 'space-between' }}>
                                                 <div className="nav-box-logo">
-                                                    <a href="/">آقاجانی</a>
+                                                    <a href="/">فروشگاه</a>
                                                 </div>
                                                 <i 
                                             className="material-symbols-outlined navbar-close-icon" style={{color: "red"}}
